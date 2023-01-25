@@ -1,0 +1,76 @@
+openapi: 3.0.3
+info:
+  title: Sample
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+    description: Sample Api Server
+security:
+  - basicAuth: [ ]
+paths:
+  /api/sample:
+    get:
+      tags:
+        - Sample
+      summary: Returns sample
+      operationId: getSample
+      responses:
+        '200':
+          description: A valid response
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/SampleResponse'
+    post:
+      tags:
+        - Sample
+      summary: Create sample
+      operationId: createSample
+      requestBody:
+        description: Authentication properties
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/SampleRequest'
+        required: true
+      responses:
+        '200':
+          description: A valid response
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/SampleResponse'
+        '5XX':
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    SampleRequest:
+      type: object
+      properties:
+        firstName:
+          type: string
+        authorities:
+          type: array
+          items:
+            type: string
+        provider:
+          type: string
+          enum:
+            - google
+            - facebook
+    SampleResponse:
+      type: object
+      properties:
+        id:
+          type: string
+    Error:
+      type: object
+      properties:
+        status:
+          type: number
+        message:
+          type: string
